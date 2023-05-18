@@ -12,10 +12,10 @@ Change-Id: I481c1c8849b2f22a7cdfb2896a6d3c2e7e3b44d9
  3 files changed, 14 insertions(+), 5 deletions(-)
 
 diff --git a/packages/SystemUI/src/com/android/systemui/qs/QuickStatusBarHeader.java b/packages/SystemUI/src/com/android/systemui/qs/QuickStatusBarHeader.java
-index 946fe542741f..c600468bb488 100644
+index 2e588353c8dd..6ba2c6198663 100644
 --- a/packages/SystemUI/src/com/android/systemui/qs/QuickStatusBarHeader.java
 +++ b/packages/SystemUI/src/com/android/systemui/qs/QuickStatusBarHeader.java
-@@ -22,6 +22,7 @@ import android.content.res.Configuration;
+@@ -25,6 +25,7 @@ import android.content.res.Configuration;
  import android.content.res.Resources;
  import android.graphics.Color;
  import android.graphics.Rect;
@@ -23,7 +23,7 @@ index 946fe542741f..c600468bb488 100644
  import android.util.AttributeSet;
  import android.util.Pair;
  import android.view.DisplayCutout;
-@@ -253,8 +254,10 @@ public class QuickStatusBarHeader extends FrameLayout {
+@@ -268,8 +269,10 @@ public class QuickStatusBarHeader extends FrameLayout {
  
          mConfigShowBatteryEstimate = resources.getBoolean(R.bool.config_showBatteryEstimateQSBH);
  
@@ -34,21 +34,21 @@ index 946fe542741f..c600468bb488 100644
 +            mRoundedCornerPadding = resources.getDimensionPixelSize(
 +                    R.dimen.rounded_corner_content_padding);
  
-         int qsOffsetHeight = SystemBarUtils.getQuickQsOffsetHeight(mContext);
- 
+         mStatusBarPaddingStart = resources.getDimensionPixelSize(
+                 R.dimen.status_bar_padding_start);
 diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java b/packages/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java
-index 13566ef8c630..58af9e36bfc9 100644
+index d5433557a63a..b8951c78197a 100644
 --- a/packages/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java
 +++ b/packages/SystemUI/src/com/android/systemui/statusbar/phone/KeyguardStatusBarView.java
-@@ -29,6 +29,7 @@ import android.graphics.drawable.Drawable;
- import android.os.Trace;
+@@ -36,6 +36,7 @@ import android.os.UserHandle;
+ import android.provider.Settings;
  import android.util.AttributeSet;
  import android.util.Pair;
 +import android.os.SystemProperties;
  import android.util.TypedValue;
  import android.view.DisplayCutout;
  import android.view.Gravity;
-@@ -198,8 +199,10 @@ public class KeyguardStatusBarView extends RelativeLayout {
+@@ -206,8 +207,10 @@ public class KeyguardStatusBarView extends RelativeLayout {
                  R.dimen.display_cutout_margin_consumption);
          mShowPercentAvailable = getContext().getResources().getBoolean(
                  com.android.internal.R.bool.config_battery_percentage_setting_available);
@@ -85,5 +85,5 @@ index c850d4f9c56b..af12f592398b 100644
          val minDotPadding = if (isPrivacyDotEnabled)
                  rotatedResources.getDimensionPixelSize(R.dimen.ongoing_appops_dot_min_padding)
 -- 
-2.25.1
+2.34.1
 
