@@ -8,11 +8,11 @@ Subject: [PATCH 38/39] SystemUI: Implement alternate brightness path for FOD
  1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt
-index c8c17b56cd92..b3df894fe625 100644
+index 53722c649fd1..4799f9f67aaa 100644
 --- a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt
 +++ b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt
 @@ -232,8 +232,19 @@ Log.d("PHH", "Surface destroyed!")
-         mySurfaceView.setVisibility(VISIBLE)
+     mySurfaceView.setVisibility(VISIBLE)
          Log.d("PHH", "setting surface visible!")
  
 -        val brightness = File("/sys/class/backlight/panel0-backlight/brightness").readText().toDouble()
@@ -34,5 +34,5 @@ index c8c17b56cd92..b3df894fe625 100644
          // Assume HBM is max brightness
          val dim = 1.0 - Math.pow( (brightness / maxBrightness), 1/2.3);
 -- 
-2.25.1
+2.34.1
 

@@ -16,19 +16,19 @@ to make this
  6 files changed, 388 insertions(+), 5 deletions(-)
 
 diff --git a/packages/SystemUI/Android.bp b/packages/SystemUI/Android.bp
-index e148d4f547a4..1e5148888cb2 100644
+index 1ecdea6c8508..b8dbebcf8a93 100644
 --- a/packages/SystemUI/Android.bp
 +++ b/packages/SystemUI/Android.bp
-@@ -177,6 +177,7 @@ android_library {
-         "lottie",
+@@ -178,6 +178,7 @@ android_library {
          "LowLightDreamLib",
          "motion_tool_lib",
+         "faceunlock_framework",
 +        "vendor.goodix.hardware.biometrics.fingerprint-V2.1-java",
      ],
      manifest: "AndroidManifest.xml",
  
 diff --git a/packages/SystemUI/res/values/config.xml b/packages/SystemUI/res/values/config.xml
-index e0da8b44de6d..98b3aa563dbf 100644
+index 1527a0f9163e..5be0ba5e45f1 100644
 --- a/packages/SystemUI/res/values/config.xml
 +++ b/packages/SystemUI/res/values/config.xml
 @@ -580,7 +580,7 @@
@@ -41,7 +41,7 @@ index e0da8b44de6d..98b3aa563dbf 100644
  
      <!-- The time (in ms) needed to trigger the lock icon view's long-press affordance -->
 diff --git a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsControllerOverlay.kt b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsControllerOverlay.kt
-index 8db4927ee059..b14e2ebb56ca 100644
+index 6d1e958e21ad..33a7ec368542 100644
 --- a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsControllerOverlay.kt
 +++ b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsControllerOverlay.kt
 @@ -118,7 +118,9 @@ class UdfpsControllerOverlay @JvmOverloads constructor(
@@ -66,7 +66,7 @@ index 8db4927ee059..b14e2ebb56ca 100644
                          if (accessibilityManager.isTouchExplorationEnabled) {
                              setOnHoverListener { v, event -> onTouch(v, event, true) }
 diff --git a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt
-index 4a8877edfa53..c8c17b56cd92 100644
+index 4a8877edfa53..53722c649fd1 100644
 --- a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt
 +++ b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt
 @@ -19,18 +19,27 @@ import android.content.Context
@@ -185,7 +185,7 @@ index 4a8877edfa53..c8c17b56cd92 100644
          animationViewController?.onDisplayConfiguring()
          mUdfpsDisplayMode?.enable(onDisplayConfigured)
 +
-+        mySurfaceView.setVisibility(VISIBLE)
++    mySurfaceView.setVisibility(VISIBLE)
 +        Log.d("PHH", "setting surface visible!")
 +
 +        val brightness = File("/sys/class/backlight/panel0-backlight/brightness").readText().toDouble()
@@ -211,7 +211,7 @@ index 4a8877edfa53..c8c17b56cd92 100644
          animationViewController?.onDisplayUnconfigured()
          mUdfpsDisplayMode?.disable(null /* onDisabled */)
 +
-+        if (hasAsusGhbm) {
++    if (hasAsusGhbm) {
 +            fodFileObserver = object: FileObserver(asusGhbmOnAchieved, FileObserver.MODIFY) {
 +                override fun onEvent(event: Int, path: String): Unit {
 +                    Log.d("PHH-Enroll", "Asus ghbm event")
@@ -257,13 +257,13 @@ index 4a8877edfa53..c8c17b56cd92 100644
      }
  }
 diff --git a/services/core/Android.bp b/services/core/Android.bp
-index 34a4579855ef..604e1be0f03f 100644
+index aa0b20382da0..1541ae5ca0e5 100644
 --- a/services/core/Android.bp
 +++ b/services/core/Android.bp
-@@ -173,7 +173,12 @@ java_library_static {
-         "overlayable_policy_aidl-java",
-         "SurfaceFlingerProperties",
-         "com.android.sysprop.watchdog",
+@@ -180,7 +180,12 @@ java_library_static {
+         "kotlin-stdlib",
+         "kotlinx_coroutines_android",
+         "kotlinx_coroutines",
 -        "vendor.samsung.hardware.sysinput-V1.2-java", // HIDL
 +        // HIDL
 +        "vendor.samsung.hardware.sysinput-V1.2-java",
@@ -556,5 +556,5 @@ index 6fbc3c66c1bc..748152aa7c97 100644
 +    }
  }
 -- 
-2.25.1
+2.34.1
 
