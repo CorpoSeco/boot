@@ -1,0 +1,70 @@
+From 453a18cded213d0c03c51ae2314cd487741a44de Mon Sep 17 00:00:00 2001
+From: TheAtt1la <alittauwu@gmail.com>
+Date: Thu, 18 May 2023 14:50:13 +0000
+Subject: [PATCH 4/5] Revert 'udfps: Forward port Boost framework hook.'
+
+---
+ .../systemui/biometrics/UdfpsController.java  | 19 -------------------
+ 1 file changed, 19 deletions(-)
+
+diff --git a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
+index 3d145526c28c..4eb2a74a1519 100644
+--- a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
++++ b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
+@@ -48,7 +48,6 @@ import android.os.UserHandle;
+ import android.os.VibrationAttributes;
+ import android.os.VibrationEffect;
+ import android.provider.Settings;
+-import android.util.BoostFramework;
+ import android.util.Log;
+ import android.util.RotationUtils;
+ import android.view.LayoutInflater;
+@@ -212,11 +211,6 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+     private boolean mFrameworkDimming;
+     private int[][] mBrightnessAlphaArray;
+ 
+-    // Boostframework for UDFPS
+-    private BoostFramework mPerf = null;
+-    private boolean mIsPerfLockAcquired = false;
+-    private static final int BOOST_DURATION_TIMEOUT = 2000;
+-
+     @VisibleForTesting
+     public static final VibrationAttributes UDFPS_VIBRATION_ATTRIBUTES =
+             new VibrationAttributes.Builder()
+@@ -846,7 +840,6 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+         udfpsHapticsSimulator.setUdfpsController(this);
+         udfpsShell.setUdfpsOverlayController(mUdfpsOverlayController);
+         mUdfpsVendorCode = mContext.getResources().getInteger(R.integer.config_udfpsVendorCode);
+-        mPerf = new BoostFramework();
+         mSecureSettings = secureSettings;
+         updateScreenOffUdfpsState();
+         mSecureSettings.registerContentObserver(Settings.Secure.SCREEN_OFF_UDFPS_ENABLED,
+@@ -976,13 +969,6 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+         } else {
+             Log.v(TAG, "showUdfpsOverlay | the overlay is already showing");
+         }
+-
+-        if (mPerf != null && !mIsPerfLockAcquired) {
+-            mPerf.perfHint(BoostFramework.VENDOR_HINT_FIRST_LAUNCH_BOOST,
+-                    null,
+-                    BOOST_DURATION_TIMEOUT);
+-            mIsPerfLockAcquired = true;
+-        }
+     }
+ 
+     private void hideUdfpsOverlay() {
+@@ -1330,11 +1316,6 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+                 mBrightnessAlphaArray[i][1] = Integer.parseInt(s[1]);
+             }
+         }
+-
+-        if (mPerf != null && mIsPerfLockAcquired) {
+-            mPerf.perfLockRelease();
+-            mIsPerfLockAcquired = false;
+-        }
+     }
+ 
+     /**
+-- 
+2.34.1
+
