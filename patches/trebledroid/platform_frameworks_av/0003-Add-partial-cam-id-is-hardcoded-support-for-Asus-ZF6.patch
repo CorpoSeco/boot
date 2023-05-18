@@ -11,26 +11,26 @@ Change-Id: Iea6e1370780a1d16f728748d1d948d092532d8fe
  2 files changed, 29 insertions(+)
 
 diff --git a/services/camera/libcameraservice/CameraService.cpp b/services/camera/libcameraservice/CameraService.cpp
-index 3f8a0317e1..688c1e7270 100644
+index 2572578ead..56fc36652c 100644
 --- a/services/camera/libcameraservice/CameraService.cpp
 +++ b/services/camera/libcameraservice/CameraService.cpp
-@@ -26,6 +26,7 @@
- #include <ctime>
- #include <string>
+@@ -30,6 +30,7 @@
+ #include <fstream>
+ #endif
  #include <sys/types.h>
 +#include <sys/wait.h>
  #include <inttypes.h>
  #include <pthread.h>
  #include <poll.h>
-@@ -143,6 +144,7 @@ const String16 CameraService::kWatchAllClientsFlag("all");
- static std::set<String8> sServiceErrorEventSet;
+@@ -166,6 +167,7 @@ static std::set<String8> sServiceErrorEventSet;
+ static std::string sCurrPackageName;
  
  CameraService::CameraService() :
 +        mPhysicalFrontCamStatus(false),
          mEventLog(DEFAULT_EVENT_LOG_LENGTH),
          mNumberOfCameras(0),
          mNumberOfCamerasWithoutSystemCamera(0),
-@@ -2039,6 +2041,7 @@ Status CameraService::connectHelper(const sp<CALLBACK>& cameraCb, const String8&
+@@ -2075,6 +2077,7 @@ Status CameraService::connectHelper(const sp<CALLBACK>& cameraCb, const String8&
              mServiceLock.lock();
          } else {
              // Otherwise, add client to active clients list
@@ -38,7 +38,7 @@ index 3f8a0317e1..688c1e7270 100644
              finishConnectLocked(client, partial, oomScoreOffset, systemNativeClient);
          }
  
-@@ -2157,6 +2160,27 @@ status_t CameraService::addOfflineClient(String8 cameraId, sp<BasicClient> offli
+@@ -2193,6 +2196,27 @@ status_t CameraService::addOfflineClient(String8 cameraId, sp<BasicClient> offli
      return OK;
  }
  
@@ -66,7 +66,7 @@ index 3f8a0317e1..688c1e7270 100644
  Status CameraService::turnOnTorchWithStrengthLevel(const String16& cameraId, int32_t torchStrength,
          const sp<IBinder>& clientBinder) {
      Mutex::Autolock lock(mServiceLock);
-@@ -3388,6 +3412,8 @@ binder::Status CameraService::BasicClient::disconnect() {
+@@ -3424,6 +3448,8 @@ binder::Status CameraService::BasicClient::disconnect() {
      }
      mDisconnected = true;
  
@@ -76,7 +76,7 @@ index 3f8a0317e1..688c1e7270 100644
      sCameraService->logDisconnected(mCameraIdStr, mClientPid, String8(mClientPackageName));
      sCameraService->mCameraProviderManager->removeRef(CameraProviderManager::DeviceMode::CAMERA,
 diff --git a/services/camera/libcameraservice/CameraService.h b/services/camera/libcameraservice/CameraService.h
-index 840e9b6412..b15f988d9e 100644
+index a3bb130cbf..909d3267df 100644
 --- a/services/camera/libcameraservice/CameraService.h
 +++ b/services/camera/libcameraservice/CameraService.h
 @@ -227,6 +227,9 @@ public:
@@ -90,5 +90,5 @@ index 840e9b6412..b15f988d9e 100644
      // Client functionality
  
 -- 
-2.25.1
+2.34.1
 
