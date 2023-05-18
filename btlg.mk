@@ -1,6 +1,7 @@
 $(call inherit-product, vendor/bootleggers/config/BoardConfigBootleggers.mk)
-$(call inherit-product, vendor/bootleggers/config/BoardConfigSoong.mk)
+
 $(call inherit-product, vendor/bootleggers/config/common_full_phone.mk)
+$(call inherit-product, vendor/bootleggers/config/BoardConfigSoong.mk)
 $(call inherit-product, device/bootleg/sepolicy/common/sepolicy.mk)
 -include vendor/bootleggers/build/core/config.mk
 
@@ -20,7 +21,8 @@ TARGET_FACE_UNLOCK_SUPPORTED := true
 TARGET_BOOT_ANIMATION_RES := 1080
 TARGET_USES_BLUR := true
 
-EXTRA_UDFPS_ANIMATIONS := true
 DEVICE_MAINTAINERS := TheAttila
+EXTRA_UDFPS_ANIMATIONS := true
+
 #WITH_MICROG := true
 WITH_GAPPS := true
